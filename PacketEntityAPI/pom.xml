@@ -35,24 +35,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>javadoc</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>8</source>
-                    <doctitle>PacketEntityAPI docs v${project.version}</doctitle>
-                    <windowtitle>PacketEntityAPI docs v${project.version}</windowtitle>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
