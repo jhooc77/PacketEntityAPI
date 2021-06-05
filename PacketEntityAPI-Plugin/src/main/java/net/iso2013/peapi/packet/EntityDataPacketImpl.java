@@ -20,6 +20,7 @@ public class EntityDataPacketImpl extends EntityPacketImpl implements EntityData
 
     EntityDataPacketImpl(EntityIdentifier identifier) {
         super(identifier, new PacketContainer(TYPE), true);
+        this.metadata = new ArrayList<>();
     }
 
     private EntityDataPacketImpl(EntityIdentifier identifier, PacketContainer rawPacket, List<WrappedWatchableObject>

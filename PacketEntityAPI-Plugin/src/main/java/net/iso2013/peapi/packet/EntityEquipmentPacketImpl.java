@@ -2,6 +2,7 @@ package net.iso2013.peapi.packet;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.reflect.FieldAccessException;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import net.iso2013.peapi.api.entity.EntityIdentifier;
 import net.iso2013.peapi.api.packet.EntityEquipmentPacket;
@@ -29,12 +30,22 @@ public class EntityEquipmentPacketImpl extends EntityPacketImpl implements Entit
     }
 
     public static EntityPacketImpl unwrap(int entityID, PacketContainer c, Player p) {
-        return new EntityEquipmentPacketImpl(
+    	ItemStack item = null;
+    	EquipmentSlot slot = null;
+    	try {
+    		item = c.getItemModifier().read(0);
+    		slot = fromItemSlot(c.getItemSlots().read(0));
+    	} catch (FieldAccessException e) {
+    		item = c.getSlotStackPairLists().read(0).get(0).getSecond();
+    		slot = fromItemSlot(c.getSlotStackPairLists().read(0).get(0).getFirst());
+    	}
+    	EntityEquipmentPacketImpl packet = new EntityEquipmentPacketImpl(
                 EntityIdentifierImpl.produce(entityID, p),
                 c,
-                fromItemSlot(c.getItemSlots().read(0)),
-                c.getItemModifier().read(0)
+                slot,
+                item
         );
+        return packet;
     }
 
     private static EquipmentSlot fromItemSlot(EnumWrappers.ItemSlot i) {

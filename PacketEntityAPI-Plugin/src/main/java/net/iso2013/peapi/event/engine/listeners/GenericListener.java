@@ -1,22 +1,34 @@
 package net.iso2013.peapi.event.engine.listeners;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.*;
+import com.comphenix.protocol.events.ListenerOptions;
+import com.comphenix.protocol.events.ListeningWhitelist;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.injector.GamePhase;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+
 import net.iso2013.peapi.PacketEntityAPIPlugin;
 import net.iso2013.peapi.api.event.EntityPacketEvent;
-import net.iso2013.peapi.api.packet.*;
+import net.iso2013.peapi.api.packet.EntityClickPacket;
+import net.iso2013.peapi.api.packet.EntityDataPacket;
+import net.iso2013.peapi.api.packet.EntityDestroyPacket;
+import net.iso2013.peapi.api.packet.EntityGroupPacket;
+import net.iso2013.peapi.api.packet.EntityPacket;
 import net.iso2013.peapi.entity.fake.FakeEntityImpl;
 import net.iso2013.peapi.event.EntityPacketEventImpl;
 import net.iso2013.peapi.event.engine.PacketEventDispatcher;
 import net.iso2013.peapi.packet.EntityClickPacketImpl;
 import net.iso2013.peapi.packet.EntityPacketImpl;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by iso2013 on 2/24/2018.
@@ -78,7 +90,12 @@ public class GenericListener implements PacketListener {
             }
             ((EntityGroupPacket) e.getPacket()).apply();
         } else if (w instanceof EntityDataPacket) {
-            if (((EntityDataPacket) w).getMetadata().isEmpty()) {
+        	
+            List<WrappedWatchableObject> metadata = ((EntityDataPacket) w).getMetadata();
+            if (metadata == null) {
+            	return;
+            }
+			if (metadata.isEmpty()) {
                 packetEvent.setCancelled(true);
                 return;
             }

@@ -1,10 +1,12 @@
 package net.iso2013.peapi.packet;
 
+import org.bukkit.entity.Player;
+
 import com.comphenix.protocol.events.PacketContainer;
+
 import net.iso2013.peapi.api.entity.EntityIdentifier;
 import net.iso2013.peapi.api.event.EntityPacketEvent;
 import net.iso2013.peapi.api.packet.EntityPacket;
-import org.bukkit.entity.Player;
 
 /**
  * Created by iso2013 on 4/21/2018.
@@ -18,7 +20,6 @@ public abstract class EntityPacketImpl implements EntityPacket {
         this.rawPacket = rawPacket;
         if (writeDefaults)
             this.rawPacket.getModifier().writeDefaults();
-
         if (identifier != null)
             this.rawPacket.getIntegers().write(0, identifier.getEntityID());
     }
